@@ -4,6 +4,7 @@ import { Client } from "basic-ftp";
 import { Command } from "commander";
 import fs from "fs";
 import path from "path";
+import kleur from "kleur";
 
 const program = new Command();
 
@@ -46,12 +47,12 @@ async function uploadFile() {
 
     console.log("Ensure remote directorry exist: ", directory);
     await client.ensureDir(directory);
-    console.log(`Uploading ${options.file} to ${remotePath}...`);
+    console.log(kleur.blue(`Uploading ${options.file} to ${remotePath}...`));
     await client.uploadFrom(options.file, newName);
 
-    console.log("Upload successful!");
+    console.log(kleur.green("✓ Upload successful!"));
   } catch (err) {
-    console.error("Error during upload:", (err as Error).message);
+    console.error(kleur.red("✗ Upload failed!"), (err as Error).message);
   } finally {
     client.close();
   }
